@@ -38,8 +38,14 @@ int main()
 									 glm::vec3(0, 1,  0));
 	glm::mat4 cam_proj = glm::perspective(45.f, 800.f / 600.f, .01f, 100.f);	
 	
-	// Model
-	glm::mat4 go_model;
+	// Model1
+	glm::mat4 go_model1;
+
+	// Model2
+	glm::mat4 go_model2;
+
+	// Model3
+	glm::mat4 go_model3;
 
 	// Light
 	glm::vec3 light_direction = glm::normalize(glm::vec3(0,-1,-1));
@@ -48,20 +54,33 @@ int main()
 	{
 		float time = context.getTime();
 
-		go_model = glm::rotate(time*100, glm::vec3(0, 1, 0))
-				   * glm::rotate(glm::radians(90.f), glm::vec3(-1,0,0))
-				   * glm::scale(glm::vec3(2,2,1));
+		go_model1 = glm::rotate(time * 1, glm::vec3(0, 1, 0))
+			* glm::rotate(glm::radians(0.f),
+				glm::vec3(1, 0, 0))
+			* glm::scale(glm::vec3(1, 1, 1)),
+				glm::translate(glm::vec3());
+
+		go_model2 = glm::rotate(time * 1, glm::vec3(0, 1, 0))
+			* glm::rotate(glm::radians(0.f),
+				glm::vec3(1, 0, 0))
+			* glm::scale(glm::vec3(1, 1, 1));
+
+		go_model3 = glm::rotate(time * 1, glm::vec3(0, 1, 0))
+			* glm::rotate(glm::radians(0.f),
+				glm::vec3(1, 0, 0))
+			* glm::scale(glm::vec3(1, 1, 1));
 
 		//go_model = glm::rotate(time, glm::vec3(0, 1, 0));
 
 		clearFramebuffer(screen);
 		setFlags(RenderFlag::DEPTH);
 
+		
 
 		int loc=0, slot=0;
 		setUniforms(standard, loc, slot,
 							cam_proj, cam_view,						// Camera information
-							go_model, floor_normal, //floor_diffuse,	// Surface information
+							go_model1, floor_normal, //floor_diffuse,	// Surface information
 							light_direction);						// Light Information
 		
 		s0_draw(screen, standard, quad);
