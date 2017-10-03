@@ -32,6 +32,25 @@ Texture loadTexture(const char *path)
 	return retval;
 }
 
+Texture loadTextures(const fstream *path)
+{
+	Texture retval[] = { 0 };
+
+	while(path.is_open())
+	int w, h, c;
+	unsigned char *pixels;
+
+	stbi_set_flip_vertically_on_load(true);
+
+	pixels = stbi_load(path, &w, &h, &c, STBI_default);
+
+	retval[] = makeTexture(w, h, c, pixels);
+
+	stbi_image_free(pixels);
+
+	return retval[];
+}
+
 std::string fileToString(const char *path)
 {
 	std::ifstream t(path);

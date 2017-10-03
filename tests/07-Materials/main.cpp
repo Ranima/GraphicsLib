@@ -4,10 +4,19 @@
 #include "graphics\RenderObjects.h"
 #include "graphics\Vertex.h"
 #include "glm\ext.hpp"
-
+#include <iostream>
+#include <fstream>
+using namespace std;
 
 int main()
 {
+	ofstream clearfile;
+	clearfile.open("Test.txt", ios::out);
+	clearfile.flush();
+	clearfile.close();
+	fstream thisFile;
+	thisFile.open("Test.txt");
+
 	Context context;
 	context.init();
 
@@ -24,9 +33,11 @@ int main()
 
 	Geometry ss_geo = loadGeometry("../../resources/models/soulspear.obj");
 
-	Texture floor_normal[] = { loadTexture("../../resources/textures/cone.jpg"),
-		loadTexture("../../resources/textures/lesserdog.jpg"),
-		loadTexture("../../resources/textures/jelly.jpg")};
+	thisFile << "../../resources/textures/cone.jpg\n";
+	thisFile << "../../resources/textures/lesserdog.jpg\n";
+	thisFile << "../../resources/textures/jelly.jpg\n";
+
+	Texture floor_normal[] = { loadTexture()};
 	//Texture floor_diffuse = loadTexture("../../resources/textures/soulspear_diffuse.tga");
 
 	Shader standard = loadShader("../../resources/shaders/standard.vert",
@@ -69,6 +80,7 @@ int main()
 		
 		s0_draw(screen, standard, quad);
 	}
+	thisFile.close();
 	context.term();
 	return 0;
 }
