@@ -37,7 +37,11 @@ int main()
 	thisFile << "../../resources/textures/lesserdog.jpg\n";
 	thisFile << "../../resources/textures/jelly.jpg\n";
 
-	Texture floor_normal[] = { loadTexture()};
+	Texture floor_normal[3];
+	while (getline(thisFile,))
+	{
+
+	};
 	//Texture floor_diffuse = loadTexture("../../resources/textures/soulspear_diffuse.tga");
 
 	Shader standard = loadShader("../../resources/shaders/standard.vert",

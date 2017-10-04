@@ -4,7 +4,6 @@
 using namespace std;
 
 Texture loadTexture(const char *path);
-Texture loadTexture(const fstream *path);
 
 Shader loadShader(const char *vpath, const char *fpath);
 
