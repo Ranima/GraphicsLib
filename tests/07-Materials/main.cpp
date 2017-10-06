@@ -37,10 +37,13 @@ int main()
 	thisFile << "../../resources/textures/lesserdog.jpg\n";
 	thisFile << "../../resources/textures/jelly.jpg\n";
 
-	Texture floor_normal[3];
-	while (getline(thisFile,))
-	{
+	string Fbuffer;
 
+	int i = 0;
+	Texture floor_normal[3];
+	while (getline(thisFile, Fbuffer) && i <= 3)
+	{
+		floor_normal[i] = loadTexture()
 	};
 	//Texture floor_diffuse = loadTexture("../../resources/textures/soulspear_diffuse.tga");
 
