@@ -1,3 +1,3 @@
 @Cube
-../../resources/cube.obj
-../../textures/char.png
+../../resources/models/cube.obj
+../../resources/textures/char.png

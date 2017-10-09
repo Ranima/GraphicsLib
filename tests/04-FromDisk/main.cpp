@@ -8,40 +8,46 @@
 
 #include "glm\ext.hpp"
 
+#include <string>
+#include <cstring>
 #include <iostream>
 #include <fstream>
 using namespace std;
+
+class Object
+{
+public:
+	Geometry model;
+	Texture texture;
+};
 
 int main()
 {
 	int i = 0;
 	int lines = 0;
-	fstream file;
-	file.open("test.txt", ios::out);
-	string line;
-
-	while (getline(file, line))
-	{
-		lines++;
-	}
-
-	while (getline(file, line)&& i <= lines)
-	{
-		if (i == 2)
-		{
-			Geometry cube = loadGeometry("../../resources/models/cube.obj");
-		}
-
-		if (i == 3)
-		{
-			
-			Texture tex = loadTexture();
-		}
-	}
 
 	// Create our window and rendering context
 	Context context;
 	context.init(800, 800);
+
+	fstream file;
+	file.open("Test.txt", ios::in);
+	string line;
+	Object Cube;
+
+	while (getline(file, line))
+	{
+		if (line[0] != '@') {continue;}
+
+		getline(file, line);
+		Cube.model = loadGeometry(line.c_str());
+
+		getline(file, line);
+		Cube.texture = loadTexture(line.c_str());
+		break;
+	}
+
+
 
 	Vertex vquad[] = {
 		{ { -1,-1,0,1 },{},{ 0,0 } },
@@ -51,8 +57,6 @@ int main()
 	};
 	unsigned quadidx[] = { 0,1,3, 1,2,3 };
 	Geometry quad = makeGeometry(vquad, 4, quadidx, 6);
-	Geometry cube = loadGeometry("../../resources/models/cube.obj");
-	Texture tex = loadTexture("../../resources/textures/char.png");
 	Shader sq = loadShader("../../resources/shaders/test.vert",
 						   "../../resources/shaders/test.frag");
 	Shader scube = loadShader("../../resources/shaders/cube.vert",
@@ -78,7 +82,7 @@ int main()
 		y -= context.getKey('S') * .016;
 
 		int loc = 0, tslot = 0;
-		setUniforms(sq, loc, tslot, tex, (int)(time*3) % 4 + frame*4, 4, 4,x,y);	
+		setUniforms(sq, loc, tslot, Cube.texture, (int)(time*3) % 4 + frame*4, 4, 4,x,y);	
 		// s0_draw(screen, sq, quad);
 
 
@@ -87,8 +91,8 @@ int main()
 		setFlags(RenderFlag::DEPTH);
 
 		loc = 0, tslot = 0;
-		setUniforms(scube, loc, tslot, mod_cube, tex);
-		s0_draw(screen, scube, cube);
+		setUniforms(scube, loc, tslot, mod_cube, Cube.texture);
+		s0_draw(screen, scube, Cube.model);
 	}
 
 
