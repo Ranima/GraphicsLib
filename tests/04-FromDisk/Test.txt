@@ -1,3 +1,6 @@
 @Cube
 ../../resources/models/cube.obj
 ../../resources/textures/char.png
+@SSpear
+../../resources/models/soulspear.obj
+../../resources/textures/soulspear_diffuse.tga

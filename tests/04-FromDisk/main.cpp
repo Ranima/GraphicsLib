@@ -34,17 +34,31 @@ int main()
 	file.open("Test.txt", ios::in);
 	string line;
 	Object Cube;
+	Cube.model.handle = 0;
+	Cube.model.ibo = 0;
+	Cube.model.size = 0;
+	Cube.model.vbo = 0;
+	Cube.texture.handle = 0;
+	Object SSpear;
+	SSpear.model.handle = 0;
+	SSpear.model.ibo = 0;
+	SSpear.model.size = 0;
+	SSpear.model.vbo = 0;
+	SSpear.texture.handle = 0;
+
+	Object objects[] = {Cube, SSpear};
 
 	while (getline(file, line))
 	{
 		if (line[0] != '@') {continue;}
 
 		getline(file, line);
-		Cube.model = loadGeometry(line.c_str());
+		objects[i].model = loadGeometry(line.c_str());
 
 		getline(file, line);
-		Cube.texture = loadTexture(line.c_str());
-		break;
+		objects[i].texture = loadTexture(line.c_str());
+
+		i++;
 	}
 
 
@@ -81,18 +95,24 @@ int main()
 		x -= context.getKey('A') * .016;
 		y -= context.getKey('S') * .016;
 
-		int loc = 0, tslot = 0;
-		setUniforms(sq, loc, tslot, Cube.texture, (int)(time*3) % 4 + frame*4, 4, 4,x,y);	
-		// s0_draw(screen, sq, quad);
+		i = 0;
+
+		while (i < sizeof(objects) / sizeof(objects[0]))
+		{
+			int loc = 0, tslot = 0;
+			setUniforms(sq, loc, tslot, objects[i].texture, (int)(time*3) % 4 + frame*4, 4, 4,x,y);	
+			// s0_draw(screen, sq, quad);
 
 
-		glm::mat4 mod_cube = glm::rotate(time, glm::vec3(1,1,1));
+			glm::mat4 mod_cube = glm::rotate(time, glm::vec3(1,1,1));
 
-		setFlags(RenderFlag::DEPTH);
+			setFlags(RenderFlag::DEPTH);
 
-		loc = 0, tslot = 0;
-		setUniforms(scube, loc, tslot, mod_cube, Cube.texture);
-		s0_draw(screen, scube, Cube.model);
+			loc = 0, tslot = 0;
+			setUniforms(scube, loc, tslot, mod_cube, objects[i].texture);
+			s0_draw(screen, scube, objects[i].model);
+			i++;
+		}
 	}
 
 
