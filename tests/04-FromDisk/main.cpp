@@ -17,8 +17,14 @@ using namespace std;
 class Object
 {
 public:
-	Geometry model;
-	Texture texture;
+	string modelPath = "";
+	string texturePath = "";
+};
+
+class Singleton
+{
+private:
+	
 };
 
 int main()
@@ -34,17 +40,7 @@ int main()
 	file.open("Test.txt", ios::in);
 	string line;
 	Object Cube;
-	Cube.model.handle = 0;
-	Cube.model.ibo = 0;
-	Cube.model.size = 0;
-	Cube.model.vbo = 0;
-	Cube.texture.handle = 0;
 	Object SSpear;
-	SSpear.model.handle = 0;
-	SSpear.model.ibo = 0;
-	SSpear.model.size = 0;
-	SSpear.model.vbo = 0;
-	SSpear.texture.handle = 0;
 
 	Object objects[] = {Cube, SSpear};
 
@@ -53,10 +49,10 @@ int main()
 		if (line[0] != '@') {continue;}
 
 		getline(file, line);
-		objects[i].model = loadGeometry(line.c_str());
+		objects[i].modelPath = loadGeometry(line.c_str());
 
 		getline(file, line);
-		objects[i].texture = loadTexture(line.c_str());
+		objects[i].texturePath = loadTexture(line.c_str());
 
 		i++;
 	}
@@ -100,7 +96,7 @@ int main()
 		while (i < sizeof(objects) / sizeof(objects[0]))
 		{
 			int loc = 0, tslot = 0;
-			setUniforms(sq, loc, tslot, objects[i].texture, (int)(time*3) % 4 + frame*4, 4, 4,x,y);	
+			setUniforms(sq, loc, tslot, objects[i].texturePath, (int)(time*3) % 4 + frame*4, 4, 4,x,y);	
 			// s0_draw(screen, sq, quad);
 
 
@@ -109,8 +105,8 @@ int main()
 			setFlags(RenderFlag::DEPTH);
 
 			loc = 0, tslot = 0;
-			setUniforms(scube, loc, tslot, mod_cube, objects[i].texture);
-			s0_draw(screen, scube, objects[i].model);
+			setUniforms(scube, loc, tslot, mod_cube, objects[i].texturePath);
+			s0_draw(screen, scube, objects[i].modelPath);
 			i++;
 		}
 	}
