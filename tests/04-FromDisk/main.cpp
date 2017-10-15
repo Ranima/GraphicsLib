@@ -21,10 +21,17 @@ public:
 	string texturePath = "";
 };
 
-class Singleton
+struct Singleton
 {
 private:
-	
+	Geometry Geo[2];
+	Texture Tex[2];
+
+public:
+	void addAssets(Geometry geo) 
+	{
+		
+	};
 };
 
 int main()
