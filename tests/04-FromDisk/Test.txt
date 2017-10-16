@@ -1,6 +1,10 @@
 @Cube
+CubeGeo
 ../../resources/models/cube.obj
+CubeTex
 ../../resources/textures/char.png
 @SSpear
+SSpearGeo
 ../../resources/models/soulspear.obj
+SSpearTex
 ../../resources/textures/soulspear_diffuse.tga
