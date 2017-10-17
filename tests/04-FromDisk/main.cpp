@@ -32,8 +32,38 @@ public:
 
 	std::vector<Object> objects;
 
-	std::map<std::string, Geometry> geos;		// name to geo
-	std::map<std::string, Texture> textures;	// name to tex
+	//std::map<std::string, Geometry> geos;		// name to geo
+	//std::map<std::string, Texture> textures;	// name to tex
+
+
+	std::map<std::string, std::string> geoPath; // name to geoPath
+	std::map<std::string, std::string> texPath; // name to texPath
+
+	std::map<std::string, Geometry> geoAssets; // geoPath to geo
+	std::map<std::string, Texture> textureAssets; // texPath to tex
+
+	bool hasLoadedGeo(std::string assetPath)
+	{
+		return geoAssets.count(assetPath);
+	}
+
+	bool hasLoadedTex(std::string assetPath)
+	{
+		return textureAssets.count(assetPath);
+	}
+
+	Geometry getGeoByName(std::string name)
+	{
+		Geometry ret = geoAssets[geoPath[name]];
+		return ret;
+	}
+
+	Texture getTexByName(std::string name)
+	{
+		Texture ret = textureAssets[texPath[name]];
+		return ret;
+	}
+
 
 	static Assets& getInstance()
 	{
@@ -63,16 +93,28 @@ public:
 			// path to geometry
 			Object newObject;
 			getline(file, line);
-			geos[holder] = loadGeometry(line.c_str());
-			newObject.geoName = holder;
 
+			// load asset if first encounter
+			if (!hasLoadedGeo(line))
+			{
+				geoAssets[line] = loadGeometry(line.c_str());
+			}
+
+			geoPath[holder] = line.c_str();
+			newObject.geoName = holder;
+			
 			// name for tex
 			getline(file, line);
 			holder = line.c_str();
 
 			// path to tex
 			getline(file, line);
-			textures[holder] = loadTexture(line.c_str());
+
+			if (!hasLoadedTex(line))
+			{
+				textureAssets[line] = loadTexture(line.c_str());
+			}
+			texPath[holder] = line.c_str();
 			newObject.textureName = holder;
 
 			objects.push_back(newObject);
@@ -128,7 +170,7 @@ int main()
 		for (int i = 0; i < assets.objects.size(); ++i)
 		{
 			int loc = 0, tslot = 0;
-			setUniforms(sq, loc, tslot, assets.textures[assets.objects[i].textureName], (int)(time*3) % 4 + frame*4, 4, 4,x,y);
+			setUniforms(sq, loc, tslot, assets.getTexByName(assets.objects[i].textureName), (int)(time*3) % 4 + frame*4, 4, 4,x,y);
 			s0_draw(screen, sq, quad);
 
 			glm::mat4 mod_cube = glm::rotate(time, glm::vec3(1,1,1));
@@ -136,8 +178,8 @@ int main()
 			setFlags(RenderFlag::DEPTH);
 
 			loc = 0, tslot = 0;
-			setUniforms(scube, loc, tslot, mod_cube, assets.textures[assets.objects[i].textureName]);
-			s0_draw(screen, scube, assets.geos[assets.objects[i].geoName]);
+			setUniforms(scube, loc, tslot, mod_cube, assets.getTexByName(assets.objects[i].textureName));
+			s0_draw(screen, scube, assets.getGeoByName(assets.objects[i].geoName));
 		}
 	}
 

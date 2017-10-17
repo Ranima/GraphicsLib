@@ -3,6 +3,11 @@ CubeGeo
 ../../resources/models/cube.obj
 CubeTex
 ../../resources/textures/char.png
+@Cube2
+CubeGeo2
+../../resources/models/cube.obj
+CubeTex2
+../../resources/textures/soulspear_normal.tga
 @SSpear
 SSpearGeo
 ../../resources/models/soulspear.obj
